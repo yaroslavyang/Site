@@ -1,0 +1,82 @@
+{% set title = 'Корзина' %}
+
+{% extends 'default.html' %}
+
+{% block content %}
+{% if user %}
+<div class="container main-container">
+  <h3>Корзина</h3>
+    {% if products %}
+  <div class="cart">
+    <div class="cart-items">
+    {% for product in products %}
+      <div class="cart-item">
+        <div class="cart-item__left">
+          <a href="/products/{{ product[0] }}">
+            <img src="../static/img/products/{{ product[6] }}" width="100px" height="100px" alt="...">
+          </a>
+          <a href="/products/{{ product[0] }}" style="color: #000" class="cart-item__title">{{ product[3] }}</a>
+        </div>
+        <div class="cart-item__right">
+          <div class="change-count">
+            <form action="/remove-from-cart" method="post">
+                <button type="submit" name="id" value="{{ product[0] }}">-</button>
+            </form>
+            <div>{{ product[1] }}</div>
+            <form action="/append-cart" method="post">
+                <button type="submit" name="id" value="{{ product[0] }}">+</button>
+            </form>
+          </div>
+          <p class="bold-text" style="font-size: 16px">{{ product[1] * product[5] }} р.</p>
+          <div class="fav-delete">
+            {% if product[0] in favorite_products_ids %}
+            <button class="to-favorites in-favorites" onclick="toFavoritesShop(this, {{ product[0] }})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+            </button>
+            {% else %}
+            <button class="to-favorites" onclick="toFavoritesShop(this, {{ product[0] }})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+            </button>
+            {% endif %}
+            <form action="/delete-from-cart" method="post">
+                <button type="submit" name="id" value="{{ product[0] }}" class="delete">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  </svg>
+                </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    <div class="order-info">
+      <h1 class="bold-text">Ваш заказ</h1>
+      <div class="order-info__text">
+        <p class="light-text">Товары ({{ total_products }})</p>
+        <p class="semibold-text">{{ total_sum }} р.</p>
+      </div>
+      <h1 class="bold-text" style="margin-top: 20px">Итого</h1>
+      <div class="order-info__text">
+        <p class="light-text">Сумма заказа</p>
+        <p class="bold-text">{{ total_sum }} р.</p>
+      </div>
+        <form action="/create-order" method="post">
+            <button type="submit" class="btn btn-danger">Оформить заказ</button>
+        </form>
+    </div>
+  </div>
+    {% endif %}
+</div>
+{% else %}
+<div class="not-authorised">
+    <h5>Что бы пользоваться корзиной, пожалуйста, авторизуйтесь</h5>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-login">Авторизоваться</button>
+</div>
+{% endif %}
+{% endblock %}

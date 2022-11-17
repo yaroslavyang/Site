@@ -1,0 +1,28 @@
+{% set title = 'Добавить товар' %}
+
+{% extends 'default.html' %}
+
+{% block content %}
+<div class="container main-container">
+    <div class="products-list">
+        <h3>Добавление нового товара</h3>
+        <form class="new-product" method="post" enctype="multipart/form-data">
+            <label for="title" class="form-label">Название товара</label>
+            <input name="title" type="text" class="form-control" id="title" aria-describedby="emailHelp" required>
+            <label for="description" class="form-label">Описание товара</label>
+            <textarea name="description" class="form-control" id="description" aria-describedby="emailHelp" required></textarea>
+            <label for="category" class="form-label">Категория товара</label>
+            <select name="category" id="category" class="form-select" aria-label="Default select example">
+                {% for category in categories %}
+                <option value="{{ category[0] }}">{{ category[1] }}</option>
+                {% endfor %}
+            </select>
+            <label for="price" class="form-label">Цена в рублях</label>
+            <input name="price" type="number" class="form-control" id="price" aria-describedby="emailHelp" min="0" step="1" required>
+            <label for="photo" class="form-label">Фото</label>
+            <input type="file" name="photo" id="photo" style="display: block" accept=".png,.jpg,.jpeg" required>
+            <button type="submit" class="btn btn-danger">Добавить товар</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

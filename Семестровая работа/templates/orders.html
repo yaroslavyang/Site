@@ -1,0 +1,27 @@
+{% set title = 'Заказы' %}
+
+{% extends 'default.html' %}
+
+{% block content %}
+{% if user %}
+<div class="container main-container">
+    <h3>Мои заказы</h3>
+    <div class="orders">
+        {% for order in orders %}
+        <div class="order">
+            <h5>Заказ №{{ order[0] }}</h5>
+            {% for product in order[1] %}
+            <p class="light-text">{{ product[0] }} * {{ product[1] }}</p>
+            {% endfor %}
+            <p class="bold-text">Сумма заказа: {{ order[2] }} р.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="not-authorised">
+    <h5>Что бы смотреть заказы, пожалуйста авторизуйтесь</h5>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-login">Авторизоваться</button>
+</div>
+{% endif %}
+{% endblock %}

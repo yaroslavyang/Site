@@ -1,0 +1,32 @@
+{% set title = 'Личный кабинет' %}
+
+{% extends 'default.html' %}
+
+{% block content %}
+<div class="container main-container">
+    <div class="products-list">
+        <h3>Личный кабинет</h3>
+        <div class="profile">
+            <div class="profile-change">
+                <label for="login">Логин</label>
+                <input type="text" class="form-control" id="login" value="{{ user.login }}" readonly>
+                <form method="post">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Имя</label>
+                    <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ user.get_name() }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Фамилия</label>
+                    <input name="surname" type="text" class="form-control" id="exampleInputPassword1" value="{{ user.get_surname() }}">
+                  </div>
+                  <button type="submit" class="btn btn-danger">Сохранить</button>
+                </form>
+            </div>
+            <form method="post" action="/append-balance" class="balance">
+                <h4>Ваш баланс: {{ user.get_balance() }}р.</h4>
+                <button type="submit" class="btn btn-danger">Пополнить баланс</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

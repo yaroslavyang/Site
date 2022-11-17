@@ -1,0 +1,52 @@
+{% set title = 'Shop' %}
+
+{% extends 'default.html' %}
+
+{% block content %}
+{% if user %}
+<div class="container main-container">
+    <div class="products-list">
+        <h3>Избранное</h3>
+        <div class="new-cards">
+            {% for product in products %}
+            <div class="card" style="width: 18rem;">
+                <a href="/products/{{ product[0] }}">
+                    <img src="../static/img/products/{{ product[5] }}" class="card-img-top" alt="..." height="300px" width="auto">
+                </a>
+                <div class="card-body">
+                    <a href="/products/{{ product[0] }}"><h5 class="card-title">{{ product[2] }}</h5></a>
+                    <p>{{ product[4] }} р.</p>
+                    <div class="card__bottom-block">
+                        {% if not user %}
+                        <button class="btn btn-danger" onclick="loginRequied()">В корзину</button>
+                        <button class="to-favorites" onclick="loginRequied()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                        </button>
+                        {% else %}
+                        {% if product[0] in cart_products_ids %}
+                            <button class="btn btn-secondary" onclick="addToCartFromShop(this, {{ product[0] }})">В корзине</button>
+                        {% else %}
+                            <button class="btn btn-danger" onclick="addToCartFromShop(this, {{ product[0] }})">В корзину</button>
+                        {% endif %}
+                            <button class="to-favorites in-favorites" onclick="toFavoritesShop(this, {{ product[0] }})">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                </svg>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="not-authorised">
+    <h5>Что бы пользоваться избранными, пожалуйста авторизуйтесь</h5>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-login">Авторизоваться</button>
+</div>
+{% endif %}
+{% endblock %}
